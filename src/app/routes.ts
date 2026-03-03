@@ -7,17 +7,24 @@ import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Cart } from './pages/Cart';
 
-export const router = createBrowserRouter([
+const basename = import.meta.env.BASE_URL.replace(/\/+$/, '');
+
+export const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      Component: Layout,
+      children: [
+        { index: true, Component: Home },
+        { path: 'catalog', Component: Catalog },
+        { path: 'search', Component: Search },
+        { path: 'login', Component: Login },
+        { path: 'register', Component: Register },
+        { path: 'cart', Component: Cart },
+      ],
+    },
+  ],
   {
-    path: '/',
-    Component: Layout,
-    children: [
-      { index: true, Component: Home },
-      { path: 'catalog', Component: Catalog },
-      { path: 'search', Component: Search },
-      { path: 'login', Component: Login },
-      { path: 'register', Component: Register },
-      { path: 'cart', Component: Cart },
-    ],
+    basename,
   },
-]);
+);
