@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react';
 import { Equipment } from '../data/equipment';
 
 interface CartItem extends Equipment {
@@ -20,7 +26,35 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, setCart] = useState<CartItem[]>(() => {
+    if (typeof window === 'undefined') {
+      return [];
+    }
+
+    try {
+      const stored = window.localStorage.getItem('cart');
+      if (!stored) return [];
+
+      const parsed = JSON.parse(stored);
+      if (!Array.isArray(parsed)) return [];
+
+      return parsed as CartItem[];
+    } catch {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      window.localStorage.setItem('cart', JSON.stringify(cart));
+    } catch {
+      // ignore write errors
+    }
+  }, [cart]);
 
   const addToCart = (equipment: Equipment) => {
     setCart((prev) => {
