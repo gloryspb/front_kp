@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { ShoppingCart, Trash2, Plus, Minus, Calendar } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { toast } from 'sonner';
 
 export const Cart = () => {
+  const navigate = useNavigate();
   const {
     cart,
     removeFromCart,
@@ -36,12 +37,12 @@ export const Cart = () => {
   };
 
   const handleCheckout = () => {
+    if (cart.length === 0) {
+      return;
+    }
+
     setShowCheckout(true);
-    toast.success('Заявка на аренду оформлена!');
-    setTimeout(() => {
-      clearCart();
-      setShowCheckout(false);
-    }, 2000);
+    navigate('/order-confirmation');
   };
 
   if (cart.length === 0) {

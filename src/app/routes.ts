@@ -6,6 +6,7 @@ import { Search } from './pages/Search';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Cart } from './pages/Cart';
+import { OrderConfirmation } from './pages/OrderConfirmation';
 
 const basename = import.meta.env.BASE_URL.replace(/\/+$/, '');
 
@@ -21,6 +22,7 @@ export const router = createBrowserRouter(
         { path: 'login', Component: Login },
         { path: 'register', Component: Register },
         { path: 'cart', Component: Cart },
+        { path: 'order-confirmation', Component: OrderConfirmation },
       ],
     },
   ],
